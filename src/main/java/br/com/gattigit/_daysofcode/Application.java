@@ -10,7 +10,7 @@ import br.com.gattigit._daysofcode.services.FilmeService;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner{
-	private String url = "https://api.themoviedb.org/3/movie/top_rated?language=pt-BR&page=1";
+	public static final String URL = "https://api.themoviedb.org/3/movie/top_rated?language=pt-BR&page=1";
 
 	@Bean
 	public RestTemplate restTemplate(){
@@ -23,6 +23,6 @@ public class Application implements CommandLineRunner{
 
 	public void run(String... args){
 		FilmeService filmeService = new FilmeService(restTemplate());
-		System.out.println(filmeService.buscarFilmes(url));
+		System.out.println(filmeService.buscarFilmes(URL));
 	}
 }

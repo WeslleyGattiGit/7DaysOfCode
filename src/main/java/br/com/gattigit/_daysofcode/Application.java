@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.gattigit._daysofcode.services.FilmeService;
+import br.com.gattigit._daysofcode.principal.Principal;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner{
@@ -22,7 +22,6 @@ public class Application implements CommandLineRunner{
 	}
 
 	public void run(String... args){
-		FilmeService filmeService = new FilmeService(restTemplate());
-		System.out.println(filmeService.buscarFilmes(URL));
+		new Principal().run();
 	}
 }

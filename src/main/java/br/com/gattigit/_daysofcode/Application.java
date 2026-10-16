@@ -10,7 +10,7 @@ import br.com.gattigit._daysofcode.principal.Principal;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner{
-	public static final String URL = "https://api.themoviedb.org/3/movie/top_rated?language=pt-BR&page=1";
+	public static final String URL = "https://api.themoviedb.org/3/movie/top_rated?language=pt-BR&page=";
 
 	@Bean
 	public RestTemplate restTemplate(){

@@ -1,23 +1,35 @@
 package br.com.gattigit._daysofcode.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.gattigit._daysofcode.Application;
+import br.com.gattigit._daysofcode.models.DadosFilme;
 import br.com.gattigit._daysofcode.services.FilmeService;
+import br.com.gattigit._daysofcode.services.HTMLGenerator;
+import br.com.gattigit._daysofcode.services.ListaService;
 
 @RestController 
 public class FilmeController {
     
-    private FilmeService filmeService;
+    private final FilmeService filmeService;
+    
+    private final ListaService listaService;
 
-    public FilmeController(FilmeService filmeService){
+    public FilmeController(FilmeService filmeService, ListaService listaService){
         this.filmeService = filmeService;
+        this.listaService = listaService;
     }
 
     @GetMapping("/top250")
-    public String buscarFilmes(){
-        return filmeService.buscarFilmes(Application.URL);
-    } 
+    public List<DadosFilme> buscarFilmes(){
+        return listaService.listar(filmeService);
+    }
+
+    @GetMapping(value = "/gen-cards", produces = "text/html")
+    public String generateHTML(){
+        return new HTMLGenerator().generate(listaService.listar(filmeService));
+    }
 
 }

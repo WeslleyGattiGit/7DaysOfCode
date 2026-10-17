@@ -1,23 +1,15 @@
 package br.com.gattigit._daysofcode.services;
 
-import java.io.Writer;
 import java.time.LocalDate;
 import java.util.List;
 
 import br.com.gattigit._daysofcode.models.DadosFilme;
 
 public class HTMLGenerator {
-    
-    private final Writer writer;
 
-    public HTMLGenerator(Writer writer){
-        this.writer = writer;
-    }
-
-    public void generate(List<DadosFilme> filmes){
-        try {
-            writer.write(
-                """
+    public String generate(List<DadosFilme> filmes){
+        String texto ="";
+        texto += """
                 <!DOCTYPE html>
                 <html lang="pt-BR">
                     <head>
@@ -29,10 +21,9 @@ public class HTMLGenerator {
                         <h1>Meus Filmes</h1>
                         <div class="container mt-4">
                         <div class="row row-col-1 row-col-sm-2 row-col-md-3 row-col-lg-4 g-4">
-                """
-            );
-            for(DadosFilme filme : filmes){
-                writer.write("""
+                """;
+                for(DadosFilme filme : filmes){
+                texto +="""
                             <div class="col">
                                 <div class="card h-100">
                                     <img src="https://image.tmdb.org/t/p/w500%s" 
@@ -52,18 +43,14 @@ public class HTMLGenerator {
                         filme.titulo(),
                         filme.nota(),
                         LocalDate.parse(filme.lancamento()).getYear()
-                    ));
+                    );
             }
-            writer.write("""
+            texto += """
                         </div>
                         </div>
                     </body>
                 </html>
-            """);
-            writer.flush();
-                
-        }catch(java.io.IOException e){
-            throw new RuntimeException(e);
-        }
+            """;
+        return texto;
     }
 }

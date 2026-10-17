@@ -2,6 +2,7 @@ package br.com.gattigit._daysofcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,6 +41,19 @@ class ApplicationTests {
 		);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
+		assertEquals(MediaType.APPLICATION_JSON,response.getHeaders().getContentType());
+	}
+
+	@Test
+	void shouldReturnCardsGeneration() {
+		ResponseEntity<String> response = restTemplate.getForEntity(
+			"http://localhost:" + port + "/gen-cards",
+            String.class
+		);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertNotNull(response.getBody());
+		assertTrue(response.getHeaders().getContentType()
+			.isCompatibleWith(MediaType.TEXT_HTML));
 	}
 
 }

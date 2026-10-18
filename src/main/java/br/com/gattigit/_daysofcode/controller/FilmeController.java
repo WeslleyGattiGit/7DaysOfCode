@@ -3,6 +3,7 @@ package br.com.gattigit._daysofcode.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gattigit._daysofcode.models.DadosFilme;
@@ -28,8 +29,9 @@ public class FilmeController {
     }
 
     @GetMapping(value = "/gen-cards", produces = "text/html")
-    public String generateHTML(){
-        return new HTMLGenerator().generate(listaService.listar(filmeService));
+    public String generateHTML(@RequestParam(defaultValue="") String title){
+        if(title.isEmpty())
+            return new HTMLGenerator().generate(listaService.listar(filmeService));
+        return new HTMLGenerator().generate(listaService.listar(filmeService, title));
     }
-
 }

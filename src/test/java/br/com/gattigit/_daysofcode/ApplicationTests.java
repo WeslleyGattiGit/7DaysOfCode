@@ -15,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import br.com.gattigit._daysofcode.services.FavoritosService;
+import br.com.gattigit._daysofcode.services.FilmeService;
+import br.com.gattigit._daysofcode.services.ListaService;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ApplicationTests {
 
@@ -32,6 +36,15 @@ class ApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+
+	@Autowired 
+	private FavoritosService favoritosService;
+	
+	@Autowired 
+	private FilmeService filmeService;
+
+	@Autowired 
+	private ListaService listaService;
 
 	@Test
 	void shouldReturnTop250Films() {
@@ -54,6 +67,36 @@ class ApplicationTests {
 		assertNotNull(response.getBody());
 		assertTrue(response.getHeaders().getContentType()
 			.isCompatibleWith(MediaType.TEXT_HTML));
+		}
+		
+	
+	@Test
+	void shouldAddFavoritos(){
+		listaService.listar(filmeService);
+
+		ResponseEntity<String> response = restTemplate.postForEntity(
+			"http://localhost:" + port + "/favoritos/1"
+			,null
+			,String.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertTrue(favoritosService.getFavoritos().stream()
+				.anyMatch(f -> f.getId().equals(1)));
 	}
 
+	@Test
+	void shouldReturnFavoritos(){
+		listaService.listar(filmeService);
+		restTemplate.postForEntity(
+			"http://localhost:" + port + "/favoritos/1"
+			,null
+			,String.class);
+
+		ResponseEntity<String> response = restTemplate.getForEntity(
+			"http://localhost:" + port + "/favoritos"
+			,String.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertNotNull(response.getBody());
+		assertTrue(response.getHeaders().getContentType()
+			.isCompatibleWith(MediaType.TEXT_HTML));
+	}
 }

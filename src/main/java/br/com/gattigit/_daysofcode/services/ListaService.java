@@ -52,4 +52,10 @@ public class ListaService {
     public List<DadosFilme> listar(FilmeService fService){
         return listar(fService, "");
     }
+
+    public List<Filme> getListaFilmes() {
+        return listaFilmes;
+    }
+
+    
 }

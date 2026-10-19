@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.gattigit._daysofcode.models.DadosFilme;
+import br.com.gattigit._daysofcode.services.FavoritosService;
+//import br.com.gattigit._daysofcode.models.Filme;
 import br.com.gattigit._daysofcode.services.FilmeService;
 import br.com.gattigit._daysofcode.services.HTMLGenerator;
 import br.com.gattigit._daysofcode.services.ListaService;
@@ -17,6 +19,12 @@ import br.com.gattigit._daysofcode.services.ListaService;
     public class Principal {
 
         private List<DadosFilme> listaFilmes = new ArrayList<>();
+
+        ListaService listaService = new ListaService();
+
+        FavoritosService favoritosService = new FavoritosService(listaService);
+
+        //public static List<Filme> favoritos = new ArrayList<>();
         
         @Bean
         public RestTemplate restTemplate(){
@@ -25,7 +33,7 @@ import br.com.gattigit._daysofcode.services.ListaService;
 
         public void run(){
             FilmeService filmeService = new FilmeService(restTemplate());
-            listaFilmes = new ListaService().listar(filmeService);
+            listaFilmes = listaService.listar(filmeService);
             //System.out.println(listaFilmes);
             gerarHTML(listaFilmes);
         }
